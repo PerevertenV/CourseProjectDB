@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\CP.Models\CP.Models.csproj" />
+		<ProjectReference Include="..\CP.Utility\CP.Utility.csproj" />
+	</ItemGroup>
+
 </Project>

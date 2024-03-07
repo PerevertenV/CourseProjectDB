@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CP.DataAccess\CP.DataAccess.csproj" />
+    <ProjectReference Include="..\CP.Models\CP.Models.csproj" />
+    <ProjectReference Include="..\CP.Utility\CP.Utility.csproj" />
+  </ItemGroup>
+
 </Project>
