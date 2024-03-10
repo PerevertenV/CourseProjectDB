@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CP.Models
+namespace CP.Models.Models
 {
-    public class Purchase
+    internal class OrderInfo
     {
+
     }
 }

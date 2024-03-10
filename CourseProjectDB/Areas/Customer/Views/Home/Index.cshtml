@@ -1,0 +1,36 @@
+﻿@model List<InfoAboutCurrency>
+<partial name="_Notifications" />
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-black py-2">Список Валюти</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3 ">
+			<div class="col-6">
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th style="color: black; text-align:center">Валюта</th>
+					<th style="color: black; text-align:center">Ціна(грн)</th>
+					<th style="color: black; text-align:center">Доступна сума</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var obj in Model.OrderBy(u => u.Name))
+				{
+					<tr>
+						<td style="color: black;" align="center" valign="middle">@obj.Name</td>
+						<td style="color: black;" align="center" valign="middle">@obj.AskedCoursePriceTo</td>
+						<td style="color: black;" align="center" valign="middle">@obj.AvailOfAskedCourse</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

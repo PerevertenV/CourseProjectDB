@@ -1,0 +1,55 @@
+﻿@model InfoAboutCurrency
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-primary py-2">@(Model.ID != 0 ? "Оновити" : "Додати") Валюту</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<form method="post" class="row" enctype="multipart/form-data">
+			<input asp-for="ID" hidden />
+			<div class="row">
+				<div class="col-12">
+					<div class="border p-3">
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Name" class="form-control border-4 shadow" />
+							<label asp-for="Name" class="ms-2"></label>
+							<span asp-validation-for="Name" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="AskedCoursePriceTo" class="form-control border-4 shadow" />
+							<label asp-for="AskedCoursePriceTo" class="ms-2"></label>
+							<span asp-validation-for="AskedCoursePriceTo" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="AvailOfAskedCourse" class="form-control border-4 shadow" />
+							<label asp-for="AvailOfAskedCourse" class="ms-2"></label>
+							<span asp-validation-for="AvailOfAskedCourse" class="text-danger"></span>
+						</div>
+						<div class="row pt-2">
+							@if (Model.ID != 0)
+							{
+								<button type="submit" class="btn btn-primary mt-2 form-control">Оновити</button>
+							}
+							else
+							{
+								<button type="submit" class="btn btn-primary mt-2 form-control">Додати</button>
+							}
+							<a asp-controller="Product" asp-action="Index" class="btn btn-secondary mt-3 form-control">Назад досписку</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts
+{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
