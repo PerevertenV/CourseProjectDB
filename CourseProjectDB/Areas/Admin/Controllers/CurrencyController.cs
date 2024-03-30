@@ -1,11 +1,14 @@
 ﻿using CourseProjectDB.Areas.Customer.Controllers;
 using CP.DataAccess.Data;
 using CP.Models.Models;
+using CP.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+	[Authorize(Roles = SD.Role_Admin)]
 	public class CurrencyController : Controller
 	{
 		private readonly ApplicationDbContext _db;

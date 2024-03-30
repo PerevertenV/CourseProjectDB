@@ -1,5 +1,8 @@
 using CP.DataAccess.Data;
+using CP.Utility;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Customer/Login/Index"; 
+        options.AccessDeniedPath = "/Customer/Register/AccessDenied";
+    });
 
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminRole", policy => policy.RequireRole(SD.Role_Admin));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

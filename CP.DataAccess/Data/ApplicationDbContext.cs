@@ -15,6 +15,8 @@ namespace CP.DataAccess.Data
             
         }
         public DbSet<InfoAboutCurrency> InfoAboutCurrency { get; set; }
+        public DbSet<Purchase> Purchase { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

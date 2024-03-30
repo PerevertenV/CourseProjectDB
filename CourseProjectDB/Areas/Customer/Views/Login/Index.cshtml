@@ -1,0 +1,35 @@
+﻿@model User
+<div style="display: flex; justify-content: center;">
+    <div class="card shadow border-0 mt-2 col-4">
+        <div class="card-header ml-0 bg-black py-2">
+            <div class="row">
+                <div class="col text-center">
+                    <h2 class="py-2 text-white">Вхід</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row pt-3">
+                <div class="col">
+                    <form id="registerForm" class="row" asp-route-returnUrl="" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="UserName" class="form-control" aria-required="true" placeholder="name" />
+                            <label asp-for="UserName">User name</label>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" class="form-control" aria-required="true" placeholder="password" />
+                            <label asp-for="Password">Пароль</label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <button id="registerSubmit" type="submit" class="btn bg-black text-white w-100">Ввійти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
