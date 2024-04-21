@@ -1,6 +1,10 @@
 using CP.DataAccess.Data;
+using CP.DataAccess.Repository;
+using CP.DataAccess.Repository.IRepository;
+using CP.Models.Models;
 using CP.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
@@ -23,6 +27,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminRole", policy => policy.RequireRole(SD.Role_Admin));
 });
+
+
+builder.Services.AddScoped<IRegister, Register>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

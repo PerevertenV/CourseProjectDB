@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using CP.Utility
+<!DOCTYPE html>
 <html lang="ua">
 <head>
     <meta charset="utf-8" />
@@ -27,12 +28,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Головна</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Currency" asp-action="Index">Список валюти</a>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Currency" asp-action="Index">Список валюти</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">Користувачі</a>
+                            </li>
+                        }
                     </ul>
-                    <a class="nav-link text-dark p-3" asp-area="Customer" asp-controller="Register" asp-action="Index">Реєстрація</a>
-                    <a class="nav-link text-dark p-3" asp-area="Customer" asp-controller="Login" asp-action="Index">Вхід</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="nav-link text-dark p-3" asp-area="Customer" asp-controller="Register" asp-action="Logout">Вихід</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link text-dark p-3" asp-area="Customer" asp-controller="Register" asp-action="Index">Реєстрація</a>
+                        <a class="nav-link text-dark p-3" asp-area="Customer" asp-controller="Login" asp-action="Index">Вхід</a>
+                    }
                 </div>
             </div>
         </nav>

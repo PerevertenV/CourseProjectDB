@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository.IRepository
 {
-    internal interface IUserRepository
+    public interface IUserRepository : IRepository<User>
     {
         string PasswordHashCoder(string password);
+        public string DecryptString(string encryptedText);
         void Update(User obj);
     }
 }

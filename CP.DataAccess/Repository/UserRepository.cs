@@ -11,32 +11,26 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
         private ApplicationDbContext _db;
-        public UserRepository(ApplicationDbContext db)
+        public UserRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
         public string PasswordHashCoder(string password)
         {
-            byte[] salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
+            byte[] bytes = Encoding.Unicode.GetBytes(password);
+            byte[] encrypted = ProtectedData.Protect(bytes, null, DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(encrypted);
+        }
 
-            // Хешуємо пароль з використанням солі і встановлюємо параметри для похідного ключа
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-
-            // Повертаємо результат у форматі "сіль:хеш"
-            return $"{Convert.ToBase64String(salt)}:{hashed}";
+        public string DecryptString(string encryptedText)
+        {
+            byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
+            byte[] decrypted = ProtectedData.Unprotect(encryptedBytes, null, DataProtectionScope.CurrentUser);
+            return Encoding.Unicode.GetString(decrypted);
         }
 
         public void Update(User obj)

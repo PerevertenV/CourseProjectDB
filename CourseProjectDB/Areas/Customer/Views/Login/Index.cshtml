@@ -12,20 +12,20 @@
         <div class="card-body p-4">
             <div class="row pt-3">
                 <div class="col">
-                    <form id="registerForm" class="row" asp-route-returnUrl="" method="post">
+                    <form asp-area="Customer" asp-controller="Login" asp-action="Index" method="post" class="row">
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="form-floating mb-3">
-                            <input asp-for="UserName" class="form-control" aria-required="true" placeholder="name" />
+                            <input asp-for="UserName" class="form-control" aria-required="true" placeholder="username" />
                             <label asp-for="UserName">User name</label>
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Password" class="form-control" aria-required="true" placeholder="password" />
+                            <input asp-for="Password" type="password" class="form-control" aria-required="true" placeholder="password" />
                             <label asp-for="Password">Пароль</label>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div>
-                            <button id="registerSubmit" type="submit" class="btn bg-black text-white w-100">Ввійти</button>
+                            <button id="loginSubmit" type="submit" class="btn bg-black text-white w-100">Підтвердити</button>
                         </div>
                     </form>
                 </div>
@@ -33,3 +33,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

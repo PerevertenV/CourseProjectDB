@@ -22,7 +22,6 @@ namespace CP.Models.Models
         [DisplayName("Прізвище Ім'я")]
         public string Name { get; set; }
         [Required]
-        [Range(6, 20, ErrorMessage = "Мінімальна к-сть символів 6 максимальна 30 (ваший пароль повинен бути надійним!)")]
         [DisplayName("Пароль")]
         public string Password { get; set; }
 

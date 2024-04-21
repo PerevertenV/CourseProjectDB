@@ -1,4 +1,5 @@
 ﻿using CP.DataAccess.Data;
+using CP.DataAccess.Repository.IRepository;
 using CP.Models.Models;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CP.DataAccess.Repository.IRepository
+namespace CP.DataAccess.Repository
 {
-    internal class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
+    public class PurchaseRepository : Repository<Purchase>, IPurchaseRepository
     {
         private ApplicationDbContext _db;
         public PurchaseRepository(ApplicationDbContext? db) : base(db)
@@ -18,13 +19,13 @@ namespace CP.DataAccess.Repository.IRepository
 
         public double CountMoneyToReturn(double DepositedMoney, double NeededMoney)
         {
-            if(DepositedMoney < NeededMoney) return 0;
-            else return Math.Round((DepositedMoney - NeededMoney),2);
+            if (DepositedMoney < NeededMoney) return 0;
+            else return Math.Round(DepositedMoney - NeededMoney, 2);
         }
 
         public double CountSumInUAH(double SumToChange, double PDVpercent, double Price)
         {
-            return Math.Round((SumToChange * Price + (SumToChange * Price * PDVpercent)), 2);
+            return Math.Round(SumToChange * Price + SumToChange * Price * PDVpercent, 2);
         }
 
         public void Update(Purchase obj)

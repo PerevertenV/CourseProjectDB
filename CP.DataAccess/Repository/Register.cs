@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository 
 {
-    internal class Register : IRegisterRepository
+    public class Register : IRegister
     {
         private ApplicationDbContext _db;
         public IPurchaseRepository Purchase {  get; private set; }

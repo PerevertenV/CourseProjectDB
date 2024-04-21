@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository.IRepository
 {
-    internal interface IRegisterRepository
+    public interface IRegister
     {
         IPurchaseRepository Purchase {  get; }
         IInfoAboutCurrencyRepository CurrencyInfo {  get; }

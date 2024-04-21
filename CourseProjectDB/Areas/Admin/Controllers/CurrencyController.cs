@@ -1,5 +1,7 @@
 ﻿using CourseProjectDB.Areas.Customer.Controllers;
 using CP.DataAccess.Data;
+using CP.DataAccess.Repository;
+using CP.DataAccess.Repository.IRepository;
 using CP.Models.Models;
 using CP.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -8,20 +10,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	[Authorize(Roles = SD.Role_Admin)]
+	[Authorize]
+	[Authorize(Roles = "Admin, Employee")]
 	public class CurrencyController : Controller
 	{
-		private readonly ApplicationDbContext _db;
+		private readonly IRegister _register;
 
-		public CurrencyController(ApplicationDbContext db)
+		public CurrencyController(IRegister register)
 		{
-			
-			_db = db;
+
+			_register = register;
 		}
 
 		public IActionResult Index()
 		{
-			List<InfoAboutCurrency> objectsFromDb = _db.InfoAboutCurrency.ToList();
+			List<InfoAboutCurrency> objectsFromDb = _register.CurrencyInfo.GetAll().ToList();
 			return View(objectsFromDb);
 		}
 		public IActionResult Upsert(int? id) // update + insert = upsert))
@@ -33,7 +36,7 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 			}
 			else
 			{
-				IAC = _db.InfoAboutCurrency.FirstOrDefault(u=> u.ID == id);
+				IAC = _register.CurrencyInfo.GetFirstOrDefault(u=> u.ID == id);
 				return View(IAC);
 			}
 		}
@@ -42,15 +45,15 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 		{
 			if(IAC.ID == 0) 
 			{
-				_db.InfoAboutCurrency.Add(IAC);
+				_register.CurrencyInfo.Add(IAC);
 				TempData["success"] = "Валюту було додано успішно!";
 			}
 			else
 			{
-				_db.InfoAboutCurrency.Update(IAC);
+				_register.CurrencyInfo.Update(IAC);
 				TempData["success"] = "Валюту було оновлено успішно!";
 			}
-			_db.SaveChanges();
+			_register.Save();
 			return RedirectToAction("Index");
 		}
 
@@ -58,19 +61,19 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 		[HttpGet]
 		public IActionResult GetAll()
 		{
-			List<InfoAboutCurrency> ObjectsFromDb = _db.InfoAboutCurrency.ToList();
+			List<InfoAboutCurrency> ObjectsFromDb = _register.CurrencyInfo.GetAll().ToList();
 			return Json(new { data = ObjectsFromDb });
 		}
 		[HttpDelete]
 		public IActionResult Delete(int? id) 
 		{ 
-			var CurrencyToBeDeleted = _db.InfoAboutCurrency.FirstOrDefault(u=>u.ID== id);
+			var CurrencyToBeDeleted = _register.CurrencyInfo.GetFirstOrDefault(u=>u.ID== id);
 			if (CurrencyToBeDeleted == null)
 			{
 				return Json(new { succes = false, message = "Помилка під час видалення" });
 			}
-			_db.InfoAboutCurrency.Remove(CurrencyToBeDeleted);
-			_db.SaveChanges();
+			_register.CurrencyInfo.Delete(CurrencyToBeDeleted);
+			_register.Save();
 
 			return Json(new { succes = true, message = "Валюту було видалено успішно!" });
 		}

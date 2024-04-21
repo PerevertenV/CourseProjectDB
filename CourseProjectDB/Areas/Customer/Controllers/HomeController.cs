@@ -1,5 +1,7 @@
 using CourseProjectDB.Models;
 using CP.DataAccess.Data;
+using CP.DataAccess.Repository;
+using CP.DataAccess.Repository.IRepository;
 using CP.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -10,17 +12,17 @@ namespace CourseProjectDB.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
+        private readonly IRegister _register;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, IRegister register)
         {
             _logger = logger;
-            _db = db;
+            _register = register;
         }
 
         public IActionResult Index()
         {
-            List<InfoAboutCurrency> objectsFromDb= _db.InfoAboutCurrency.ToList();
+            List<InfoAboutCurrency> objectsFromDb= _register.CurrencyInfo.GetAll().ToList();
             return View(objectsFromDb);
         }
 
@@ -38,7 +40,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 		[HttpGet]
 		public IActionResult GetAll()
 		{
-			List<InfoAboutCurrency> ObjectsFromDb = _db.InfoAboutCurrency.ToList();
+			List<InfoAboutCurrency> ObjectsFromDb = _register.CurrencyInfo.GetAll().ToList();
 			return Json(new { data = ObjectsFromDb });
 		}
 		#endregion
