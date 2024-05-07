@@ -1,0 +1,90 @@
+﻿@model PaymentsVM
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-primary py-2">Створення Платежу</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<form method="post" class="row" enctype="multipart/form-data">
+			<input asp-for="Payments.ID" hidden />
+			<div class="row">
+				<div class="col-12">
+					<div class="border p-3">
+						<div class="form-floating py-2 col-12">
+							<input asp-for="Payments.Sum" class="form-control border-4 shadow" />
+							<label asp-for="Payments.Sum" class="ms-2"></label>
+							<span asp-validation-for="Payments.Sum" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12">
+							<select class="form-select" asp-for="Payments.Type" asp-items="Model.PaymentsTypeList" aria-required="true">
+								<option value="" selected disabled> Оберіть тип платежу </option>
+							</select>
+							<label for="Payments_Type">Тип платежу</label>
+							<span asp-validation-for="Payments.Type" class="text-danger"></span>
+						</div>
+						<div class="form-floating py-2 col-12" id="Employee" style="display:none;">
+							<select class="form-select" name="selectedEmployeeId">
+								<option selected disabled>Виберіть працівника</option>
+								@foreach (var employee in Model.EmployeeList)
+								{
+									<option value="@employee.Value">@employee.Text</option>
+								}
+							</select>
+							<label for="selectedEmployeeId">Працівник</label>
+						</div>
+
+						<div class="form-floating py-2 col-12" style="display:none;" id="Curr">
+							<select class="form-select"  name="selectedCurrencyId">
+								<option selected disabled>Виберіть валюту</option>
+								@foreach (var curr in Model.CurrencyList)
+								{
+									<option value="@curr.Value">@curr.Text</option>
+								}
+							</select>
+							<label for="selectedCurrencyId">Валюта</label>
+						</div>
+
+						<div class="form-floating py-2 col-12">
+							<textarea asp-for="Payments.Description" rows="4" cols="100" class="form-control border-4 shadow"></textarea>
+							<label asp-for="Payments.Description" class="ms-2"></label>
+							<span asp-validation-for="Payments.Description" class="text-danger"></span>
+						</div>
+						<div class="row pt-2">
+							<button type="submit" class="btn btn-primary mt-2 form-control">Створити</button>
+							<a asp-controller="Payments" asp-action="Index" class="btn btn-secondary mt-3 form-control">Назад до списку</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+		$(document).ready(function () {
+			$('#Payments_Type').change(function () {
+				var selection = $('#Payments_Type option:selected').text();
+				var divElementE = $('#Employee');
+				var divElementC = $('#Curr');
+				if (selection == 'Виплата заробітної плати працівникам') {
+					divElementE.show();
+					divElementC.hide();
+				} else if (selection == 'Закупівля валюти') {
+					divElementC.show();
+					divElementE.hide();
+				} else {
+					divElementE.hide();
+					divElementC.hide();
+				}
+			});
+		});
+	</script>
+}

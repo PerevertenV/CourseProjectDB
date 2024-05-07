@@ -1,9 +1,9 @@
 ﻿using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using CP.Models;
 
 namespace CourseProjectDB.Areas.Customer.Controllers
 {

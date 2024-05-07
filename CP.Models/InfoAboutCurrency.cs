@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CP.Models.Models
+namespace CP.Models
 {
     public class InfoAboutCurrency
     {
@@ -18,8 +18,8 @@ namespace CP.Models.Models
         public string Name { get; set; }
         [Required]
         [DisplayName("Цiна")]
-		[Range(1, 300, ErrorMessage = "Ціна не може бути більше 300 грн за одиницю та дорівнювати 0")]
-		public double AskedCoursePriceTo { get; set; }
+        [Range(1, 300, ErrorMessage = "Ціна не може бути більше 300 грн за одиницю та дорівнювати 0")]
+        public double AskedCoursePriceTo { get; set; }
         [Required]
         [DisplayName("Доступна к-сть")]
         [Range(1, 10000, ErrorMessage = "Доступна кiлькiсть не може перевищувати 10000 та дорівнювати 0")]

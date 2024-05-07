@@ -1,6 +1,6 @@
 ﻿using CP.DataAccess.Data;
 using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
+using CP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

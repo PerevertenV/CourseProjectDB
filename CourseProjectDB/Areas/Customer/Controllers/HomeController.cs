@@ -1,8 +1,7 @@
-using CourseProjectDB.Models;
+using CP.Models;
 using CP.DataAccess.Data;
 using CP.DataAccess.Repository;
 using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -1,4 +1,4 @@
-namespace CourseProjectDB.Models
+namespace CP.Models
 {
     public class ErrorViewModel
     {

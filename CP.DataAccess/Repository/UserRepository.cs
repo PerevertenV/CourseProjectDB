@@ -1,6 +1,6 @@
 ﻿using CP.DataAccess.Data;
 using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
+using CP.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Collections.Generic;

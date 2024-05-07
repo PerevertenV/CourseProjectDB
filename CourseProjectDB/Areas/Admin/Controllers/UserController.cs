@@ -1,11 +1,11 @@
 ﻿using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
+using CP.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
-	[Authorize]
+    [Authorize]
 	[Authorize(Roles = "Admin")]
 	[Area("Admin")]
 	public class UserController : Controller

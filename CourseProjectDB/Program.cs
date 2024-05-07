@@ -1,7 +1,7 @@
 using CP.DataAccess.Data;
 using CP.DataAccess.Repository;
 using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
+using CP.Models;
 using CP.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;

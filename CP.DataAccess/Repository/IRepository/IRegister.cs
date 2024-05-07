@@ -11,6 +11,7 @@ namespace CP.DataAccess.Repository.IRepository
         IPurchaseRepository Purchase {  get; }
         IInfoAboutCurrencyRepository CurrencyInfo {  get; }
         IUserRepository User { get; }
+        IPaymentsRepository Payments { get; }
         void Save();
     }
 }

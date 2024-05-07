@@ -2,14 +2,14 @@
 using CP.DataAccess.Data;
 using CP.DataAccess.Repository;
 using CP.DataAccess.Repository.IRepository;
-using CP.Models.Models;
+using CP.Models;
 using CP.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
-	[Area("Admin")]
+    [Area("Admin")]
 	[Authorize]
 	[Authorize(Roles = "Admin, Employee")]
 	public class CurrencyController : Controller

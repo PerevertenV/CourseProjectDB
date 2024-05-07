@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository
 {
-    public class InfoAboutCurrencyRepository : Repository<InfoAboutCurrency>, IInfoAboutCurrencyRepository
+    public class PaymentsRepository : Repository<Payments>, IPaymentsRepository
     {
         private ApplicationDbContext _db;
-        public InfoAboutCurrencyRepository(ApplicationDbContext? db) : base(db)
+        public PaymentsRepository(ApplicationDbContext? db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(InfoAboutCurrency obj) 
+        public void Update(Payments obj) 
         {
-            _db.InfoAboutCurrency.Update(obj);
+            _db.Payments.Update(obj);
         }
     }
 }

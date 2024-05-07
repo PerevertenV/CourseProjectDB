@@ -1,0 +1,56 @@
+﻿@model List<Payments>
+<partial name="_Notifications" />
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-black py-2">Список Платежів</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3 ">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-area="Admin" asp-controller="Payments" asp-action="Insert" class="btn btn-primary">
+					<i class="bi bi-file-earmark-plus"></i> Створити новий платіж
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th style="color: black; text-align:center">Тип</th>
+					<th style="color: black; text-align:center">Сума</th>
+					<th style="color: black; text-align:center">Дата</th>
+					<th style="color: black; text-align:center">Перегляд</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var obj in Model.OrderBy(u => u.ID))
+				{
+					<tr>
+						<td style="color: black;" align="center" valign="middle">@obj.Type</td>
+						<td style="color: black;" align="center" valign="middle">@obj.Sum</td>
+						<td style="color: black;" align="center" valign="middle">@obj.DateOfMakingPayments</td>
+						<td align="center" valign="middle">
+							<div class="w-75 btn-group" role="group">
+								<a asp-controller="Payments" asp-action="Check" asp-route-id="@obj.ID" class="btn btn-primary mx-2" style="width:40px">
+									...
+								</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+@section Scripts
+{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}

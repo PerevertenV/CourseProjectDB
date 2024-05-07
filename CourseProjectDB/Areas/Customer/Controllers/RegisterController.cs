@@ -1,5 +1,4 @@
-﻿using CP.Models.Models;
-using CP.DataAccess.Repository.IRepository;
+﻿using CP.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CP.Models;
 
 
 

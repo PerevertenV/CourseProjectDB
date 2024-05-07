@@ -1,4 +1,4 @@
-﻿using CP.Models.Models;
+﻿using CP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CP.DataAccess.Repository.IRepository
 {
-	public interface IPurchaseRepository : IRepository<Purchase>
+    public interface IPurchaseRepository : IRepository<Purchase>
 	{
 		double CountSumInUAH(double SumToChange, double PDVpercent, double Price);
 		double CountMoneyToReturn(double DepositedMoney, double NeededMoney);

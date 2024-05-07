@@ -1,4 +1,4 @@
-﻿using CP.Models.Models;
+﻿using CP.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ namespace CP.DataAccess.Data
         public DbSet<InfoAboutCurrency> InfoAboutCurrency { get; set; }
         public DbSet<Purchase> Purchase { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Payments> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
