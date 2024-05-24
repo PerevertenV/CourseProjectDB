@@ -20,6 +20,7 @@ namespace CP.DataAccess.Repository
             this.dbSet = _db.Set<T>();
             _db.Purchase.Include(u => u.InfoAboutCurrency).Include(u => u.CurrencyID);
             _db.Purchase.Include(u => u.User).Include(u => u.IDOfUser);
+            _db.Purchase.Include(u => u.User).Include(u => u.IDOfEmployee);
         }
         public void Add(T entity)
         {

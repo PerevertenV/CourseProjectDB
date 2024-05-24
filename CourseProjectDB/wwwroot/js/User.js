@@ -8,7 +8,7 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/getall' },
         "columns": [
-            { data: 'name', width: "20%" },
+            { data: 'name', width: "30%" },
             { data: 'userName', width: "25%" },
             { data: 'role', width: "30%" },
             {
@@ -18,7 +18,7 @@ function loadDataTable() {
                         <a onClick=Delete('/admin/user/delete/${data}') class="btn btn-primary mx-2 btn-danger"> <i class="bi bi-trash3"></i></a>
                     </div>`
                 },
-                "width": "25%"
+                "width": "15%"
             }
         ]
     });

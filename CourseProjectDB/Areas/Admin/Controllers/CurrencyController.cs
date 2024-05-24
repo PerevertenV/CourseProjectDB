@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
     [Area("Admin")]
-	[Authorize]
 	[Authorize(Roles = "Admin, Employee")]
 	public class CurrencyController : Controller
 	{

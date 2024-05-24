@@ -1,0 +1,211 @@
+﻿@model PurchaseVM
+
+<partial name="_Notifications" />
+<div class="card shadow border-0 mt-4">
+    <form method="post" asp-area="Customer" asp-controller="Purchase">
+        <input asp-for="Purchase.ID" hidden />
+        <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-primary py-2"> @(Model.Purchase.State == SD.State_Completed ? "Переглянути" : "Підтвердити") замовлення</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 col-lg-6 pb-4">
+                        <div class="row">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Деталі замовлення:</span>
+                            </h4>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">ID замовлення</div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.ID" type="text" disabled class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">ПІБ замовника</div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.User.Name" type="text" disabled class="form-control" />
+                            </div>
+                        </div>
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            <div class="row my-1">
+                                <div class="col-3 font-weight-bold">Працівник</div>
+                                <div class="col-9">
+                                    <input asp-for="Purchase.UserEmployee.Name" disabled type="text" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">Валюта</div>
+                            <div class="col-9">
+                                @if(Model.Purchase.State == SD.State_Created)
+                                {
+                                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                    {
+                                        <select class="form-select" asp-for="Purchase.CurrencyID" asp-items="Model.CurrencyList" aria-required="true">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                        <span asp-validation-for="Purchase.CurrencyID" class="text-danger"></span>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="Purchase.InfoAboutCurrency.Name" disabled type="text" class="form-control" />
+                                    }
+                                }
+                                else
+                                {
+                                    <input asp-for="Purchase.InfoAboutCurrency.Name" disabled type="text" class="form-control" />
+                                }
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">Стан</div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.State" type="text" disabled class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">Сума у валюті</div>
+                            <div class="col-9">
+                               @if(Model.Purchase.State == SD.State_Created)
+                               {
+                                    @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                    {
+                                        <input asp-for="Purchase.SumOfCurrency" type="text" class="form-control" />
+                                        <span asp-validation-for="Purchase.SumOfCurrency" class="text-danger"></span>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="Purchase.SumOfCurrency" disabled type="text" class="form-control" />
+                                    }
+                               }
+                               else
+                               {
+                                    <input asp-for="Purchase.SumOfCurrency" disabled type="text" class="form-control" />
+                               }
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 font-weight-bold">Сума у UAH</div>
+                            <div class="col-9">
+                                <input id="SumInUAH" asp-for="Purchase.SumInUAH" disabled type="text" class="form-control" />
+                            </div>
+                        </div>
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            @if (Model.Purchase.State == SD.State_InProces)
+                            {
+                                <div class="row my-1">
+                                    <div class="col-3 font-weight-bold">Внесені кошти</div>
+                                    <div class="col-9">
+                                        <input id="DepositedMoney" asp-for="Purchase.DepositedMoney" type="text" class="form-control" />
+                                        <span asp-validation-for="Purchase.DepositedMoney" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (Model.Purchase.State == SD.State_Completed)
+                        {
+                            <div class="row my-1">
+                                <div class="col-3 font-weight-bold">Внесені кошти</div>
+                                <div class="col-9">
+                                    <input id="DepositedMoney" disabled asp-for="Purchase.DepositedMoney" type="text" class="form-control" />
+                                </div>
+                            </div>
+                        }                        
+                        @if (Model.Purchase.State != SD.State_Created)
+                        {
+                            <div class="row my-1">
+                                <div class="col-3 font-weight-bold">Решта</div>
+                                <div class="col-9">
+                                    <input asp-for="Purchase.MoneyToReturn" disabled type="text" class="form-control" />
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-12 col-lg-5 offset-lg-1">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-primary">Підсумок</span>
+                        </h4>
+                        <label class="btn btn-outline-primary form-control my-2">Статус замовлення - @Model.Purchase.State</label>
+                        <ul class="list-group mb-3">
+
+                            <li class="list-group-item d-flex justify-content-between p-2">
+                                <div class="row container">
+                                    <div class="col-8">
+                                        <h6 class="my-0 text-primary">@Model.Purchase.InfoAboutCurrency.Name</h6>
+                                        <small class="text-muted">Сума у валюті: @Model.Purchase.SumOfCurrency</small><br />
+                                        @if(Model.Purchase.State == SD.State_Completed)
+                                        {
+                                            <small class="text-muted">Внесені кошти: @Model.Purchase.DepositedMoney</small><br />
+                                            <small class="text-muted">Решта: @Model.Purchase.MoneyToReturn</small><br />
+                                        }
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <p class="text-success">
+                                            @Model.Purchase.InfoAboutCurrency.AskedCoursePriceTo.ToString("c")
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item bg-primary">
+                                <div class="row container">
+                                    <div class="col-6">
+                                        <h5 class="text-white">СУМА </h5>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <h5 class="text-white"> @Model.Purchase.SumInUAH.ToString("c")</h5>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            if (Model.Purchase.State == SD.State_InProces)
+                            {
+                                <button type="submit" asp-action="InProces" onclick="return validateInput()" class="btn btn-primary form-control my-1">Підтвердити замовлення</button>
+                            } 
+                            if (Model.Purchase.State == SD.State_Created)
+                            {
+                                <button type="submit" asp-action="ConfirmData" class="btn btn-primary form-control my-1">Підтвердити дані</button>
+                            }
+                        }
+                        @if (Model.Purchase.State == SD.State_Created)
+                        {
+                            <button type="submit" asp-action="CanclePurchase" class="btn btn-danger form-control my-1">Скасувати замовлення</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+   
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            var depositedMoney = parseFloat(document.getElementById("DepositedMoney").value);
+            var sumInUAH = parseFloat(document.getElementById("SumInUAH").value);
+
+            if (depositedMoney < sumInUAH) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Оййй...',
+                    text: 'Внесена сума має бути більшою чи дорівнювати потрібній сумі до сплати!',
+                });
+                return false;
+            }
+        }
+    </script>
+}

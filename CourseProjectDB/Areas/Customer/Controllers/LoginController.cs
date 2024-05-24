@@ -35,7 +35,8 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, user.Name),
-                            new Claim(ClaimTypes.Role, user.role)
+                            new Claim(ClaimTypes.Role, user.role),
+                            new Claim("UserID", user.ID.ToString())
                         };
 
                         var claimsIdentity = new ClaimsIdentity(

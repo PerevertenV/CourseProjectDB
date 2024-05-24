@@ -23,7 +23,7 @@ namespace CP.Models
         public string Type { get; set; }
 
         [Required]
-        [DisplayName("Тип платежу")]
+        [DisplayName("Дата створення платежу")]
         public DateTime DateOfMakingPayments { get; set; }
         [DisplayName("Опис платежу")]
 

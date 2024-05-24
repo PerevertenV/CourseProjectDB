@@ -22,6 +22,7 @@ namespace CP.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<InfoAboutCurrency>().HasData(
                 new InfoAboutCurrency 
                 {
@@ -29,6 +30,21 @@ namespace CP.DataAccess.Data
                     Name="USD", 
                     AskedCoursePriceTo = 37, 
                     AvailOfAskedCourse = 5000 
+                }
+                );
+            modelBuilder.Entity<Purchase>().HasData(
+                new Purchase 
+                {
+                    ID=1, 
+                    IDOfEmployee= null,
+                    IDOfUser= null, 
+                    CurrencyID=1,
+                    DateOfMakingPurchase= DateTime.Now,
+                    MoneyToReturn= 0,   
+                    DepositedMoney = 0,
+                    SumInUAH= 0,    
+                    State = "Заверешено",
+                    SumOfCurrency= 0
                 }
                 );
         }

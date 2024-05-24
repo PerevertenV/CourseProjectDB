@@ -22,7 +22,7 @@ namespace CP.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CP.Models.Models.InfoAboutCurrency", b =>
+            modelBuilder.Entity("CP.Models.InfoAboutCurrency", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace CP.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CP.Models.Models.Payments", b =>
+            modelBuilder.Entity("CP.Models.Payments", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace CP.DataAccess.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("CP.Models.Models.Purchase", b =>
+            modelBuilder.Entity("CP.Models.Purchase", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -96,14 +96,21 @@ namespace CP.DataAccess.Migrations
                     b.Property<DateTime>("DateOfMakingPurchase")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("DepositedMoney")
+                    b.Property<double?>("DepositedMoney")
                         .HasColumnType("float");
 
-                    b.Property<int>("IDOfUser")
+                    b.Property<int?>("IDOfEmployee")
                         .HasColumnType("int");
 
-                    b.Property<double>("MoneyToReturn")
+                    b.Property<int?>("IDOfUser")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("MoneyToReturn")
                         .HasColumnType("float");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("SumInUAH")
                         .HasColumnType("float");
@@ -115,12 +122,27 @@ namespace CP.DataAccess.Migrations
 
                     b.HasIndex("CurrencyID");
 
+                    b.HasIndex("IDOfEmployee");
+
                     b.HasIndex("IDOfUser");
 
                     b.ToTable("Purchase");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CurrencyID = 1,
+                            DateOfMakingPurchase = new DateTime(2024, 5, 7, 14, 33, 44, 289, DateTimeKind.Local).AddTicks(6911),
+                            DepositedMoney = 0.0,
+                            MoneyToReturn = 0.0,
+                            State = "Заверешено",
+                            SumInUAH = 0.0,
+                            SumOfCurrency = 0.0
+                        });
                 });
 
-            modelBuilder.Entity("CP.Models.Models.User", b =>
+            modelBuilder.Entity("CP.Models.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -151,19 +173,23 @@ namespace CP.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CP.Models.Models.Purchase", b =>
+            modelBuilder.Entity("CP.Models.Purchase", b =>
                 {
-                    b.HasOne("CP.Models.Models.InfoAboutCurrency", "InfoAboutCurrency")
+                    b.HasOne("CP.Models.InfoAboutCurrency", "InfoAboutCurrency")
                         .WithMany()
                         .HasForeignKey("CurrencyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CP.Models.Models.User", "User")
+                    b.HasOne("CP.Models.User", "Employee")
                         .WithMany()
-                        .HasForeignKey("IDOfUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IDOfEmployee");
+
+                    b.HasOne("CP.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("IDOfUser");
+
+                    b.Navigation("Employee");
 
                     b.Navigation("InfoAboutCurrency");
 

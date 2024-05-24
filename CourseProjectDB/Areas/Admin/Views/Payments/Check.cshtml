@@ -29,6 +29,11 @@
 							<label asp-for="Type" class="ms-2"></label>
 							<span asp-validation-for="Type" class="text-danger"></span>
 						</div>
+						<div class="form-floating py-2 col-12">
+							<input asp-for="DateOfMakingPayments" disabled class="form-control border-4 shadow" />
+							<label asp-for="DateOfMakingPayments" class="ms-2"></label>
+							<span asp-validation-for="DateOfMakingPayments" class="text-danger"></span>
+						</div>
 						
 						<div class="form-floating py-2 col-12">
 							<textarea disabled asp-for="Description" rows="4" cols="100" class="form-control border-4 shadow"></textarea>
@@ -36,7 +41,7 @@
 							<span asp-validation-for="Description" class="text-danger"></span>
 						</div>
 						<div class="row pt-2">
-							<a asp-controller="Payments" asp-action="Index" class="btn btn-secondary mt-3 form-control">Назад до списку</a>
+							<a asp-controller="Payments" asp-action="Index" class="btn btn-outline-dark mt-3 form-control">Назад до списку</a>
 						</div>
 					</div>
 				</div>

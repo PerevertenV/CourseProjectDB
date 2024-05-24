@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -23,34 +24,45 @@ namespace CP.Models
         [ValidateNever]
         public InfoAboutCurrency InfoAboutCurrency { get; set; }
 
-        [Required]
-        [DisplayName("ІD користувача що здійсеює операцію")]
-        public int IDOfUser { get; set; }
+        
+        [DisplayName("ІD користувача що здійснює операцію")]
+        public int? IDOfUser { get; set; }
         [ForeignKey(nameof(IDOfUser))]
         [ValidateNever]
-        public User User { get; set; }
+        public User? User { get; set; }
+        
+        [DisplayName("ІD працівника що обробляє операцію")]
+        public int? IDOfEmployee { get; set; }
+		[ForeignKey(nameof(IDOfEmployee))]
+		[ValidateNever]
+		public User? UserEmployee { get; set; }
 
-        [Required]
-        [DisplayName("Внесені кошти")]
-        public double DepositedMoney { get; set; }
+		[DisplayName("Внесені кошти")]
+        [Range(1, 100000, ErrorMessage = "Вкажіть внесену суму!")]
+        public double? DepositedMoney { get; set; }
 
-        [Required]
-        [DisplayName("Валюта для обміну")]
-        public double SumOfCurrency { get; set; }
+        
+        [DisplayName("Сума для обміну")]
+		[Range(1, 5000, ErrorMessage = "Cума має бути від 1 до 5000 одиниць!")]
+		public double SumOfCurrency { get; set; }
 
-        [Required]
+        
         [DisplayName("Решта")]
-        public double MoneyToReturn { get; set; }
+        public double? MoneyToReturn { get; set; }
 
         public static double PDVPercent = 0.2;
 
         [Required]
-        [DisplayName("Сума для обміну")]
+        [DisplayName("Сума для обміну в грн")]
         public double SumInUAH { get; set; }
 
-        [Required]
+        
         [DisplayName("Дата час здійснення операції")]
-        public DateTime DateOfMakingPurchase { get; set; }
+        public DateTime? DateOfMakingPurchase { get; set; }
 
+		[Required]
+		[DisplayName("Статус обробки")]
+		public string State { get; set; }
     }
+
 }

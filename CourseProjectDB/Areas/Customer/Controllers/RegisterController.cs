@@ -82,12 +82,14 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 
                 _register.User.Add(UserToAdding);
                 _register.Save();
+                var UserId = _register.User.GetFirstOrDefault(u=>u.UserName == obj.UserName).ID;
                 if (!User.Identity.IsAuthenticated) 
                 { 
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obj.Name),
-                        new Claim(ClaimTypes.Role, WhichRole)
+                        new Claim(ClaimTypes.Role, WhichRole),
+                        new Claim("UserID", UserId.ToString())
                     };
 
                     var claimsIdentity = new ClaimsIdentity(

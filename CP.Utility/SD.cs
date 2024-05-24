@@ -17,5 +17,9 @@ namespace CP.Utility
 		public const string Payments_Type_BC = "Закупівля валюти";
 		public const string Payments_Type_Util = "Комунальні послуги";
 
-	}
+		public const string State_Created = "Створено";
+		public const string State_InProces = "В процесі";
+		public const string State_Completed = "Завершено";
+
+    }
 }

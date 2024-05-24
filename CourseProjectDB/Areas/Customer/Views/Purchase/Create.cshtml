@@ -1,0 +1,73 @@
+﻿ @model PurchaseVM
+
+<div style="display: flex; justify-content: center;">
+    <div class="card shadow border-0 mt-2 col-7">
+        <div class="card-header ml-0 bg-black py-3">
+            <div class="row">
+                <div class="col text-center text-white">
+                    <h3>
+                        Замовлення
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="row pt-0">
+                <div class="col">
+                    <form asp-area="Customer" asp-controller="Purchase" asp-action="Create" method="post" class="row">
+                        <input asp-for="Purchase.IDOfUser" hidden />
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="row my-2">
+                            <div class="col-3 text-black text-xl-end mt-2 fw-bold">
+                                <label>Ваше Ім'я</label>
+                            </div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.User.Name" disabled class="form-control" />
+                                <span asp-validation-for="Purchase.User.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-3 text-black text-xl-end mt-2 fw-bold">
+                                <label>Сума у валюті</label>
+                            </div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.SumOfCurrency" class="form-control" />
+                                <span asp-validation-for="Purchase.SumOfCurrency" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-3 text-black text-xl-end mt-2 fw-bold">
+                                <label>Валюта</label>
+                            </div>
+                            <div class="col-9">
+                                <select class="form-select" asp-for="Purchase.CurrencyID" asp-items="Model.CurrencyList" aria-required="true">
+                                    <option value="" selected disabled> Оберіть валюту </option>
+                                </select>
+                                <span asp-validation-for="Purchase.CurrencyID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-3 text-black text-xl-end mt-2 fw-bold">
+                                <label>Стан</label>
+                            </div>
+                            <div class="col-9">
+                                <input asp-for="Purchase.State" disabled class="form-control" />
+                                <span asp-validation-for="Purchase.State" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div >
+                            <button type="submit" class="btn bg-black text-white w-100 mt-1">Підтвердити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
