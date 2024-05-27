@@ -1,13 +1,17 @@
 var dataTable;
 
+$(document).ready(function () {
+    loadDataTable();
+});
+
 function loadDataTable(status) {
     dataTable = $('#tblData').DataTable(
         {
-            "ajax": { url: '/customer/purchase/getall?status=' + status },
+            "ajax": { url: '/customer/purchase/getall' },
             "columns": [
                 { data: 'id', width: "20%" },
                 { data: 'state', width: "20%" },
-                { data: 'currencyID', width: "20%" },
+                { data: 'infoAboutCurrency.name', width: "20%" },
                 { data: 'user.userName', width: "20%" },
                 {
                     data: 'id',

@@ -71,6 +71,14 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 			{
 				return Json(new { succes = false, message = "Помилка під час видалення" });
 			}
+			List<Purchase> purchases = _register.Purchase.GetAll().ToList();
+			foreach (Purchase purchase in purchases)
+			{
+				if (purchase.CurrencyID == id)
+				{
+					purchase.CurrencyID = null;
+				}
+			}
 			_register.CurrencyInfo.Delete(CurrencyToBeDeleted);
 			_register.Save();
 

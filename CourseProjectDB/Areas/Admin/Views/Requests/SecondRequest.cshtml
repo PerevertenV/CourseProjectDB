@@ -1,0 +1,49 @@
+﻿<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-black py-2">Список Працівників</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3 ">
+		</div>
+		<table id="tblData" class="table table-bordered table-striped" style="width:100%">
+			<thead>
+				<tr>
+					<th style="color: Black; text-align:center">ПІБ</th>
+					<th style="color: Black; text-align:center">User name</th>
+				</tr>
+			</thead>
+			<tbody style="text-align:center">
+			</tbody>
+		</table>
+	</div>
+</div>
+
+@section Scripts
+{
+	<script>
+		var dataTable;
+
+		$(document).ready(function () 
+		{
+			loadDataTable();
+		});
+
+		function loadDataTable() 
+		{
+			dataTable = $('#tblData').DataTable(
+			{
+				"ajax": { url: '/admin/requests/getemployee' },
+				"columns": 
+				[
+					{ data: 'name', width: "70%" },
+					{ data: 'userName', width: "30%" },
+				]
+			});
+		}
+	</script>
+
+}

@@ -1,0 +1,36 @@
+﻿@model RequestsVM
+
+<form asp-controller="Requests" asp-action="FifthRequest" method="post">
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-black py-2">Запит</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="color: black; text-align:center">Валюта</th>
+                    <th style="color: black; text-align:center">К-сть операцій</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.SelectIAC)
+                {
+                    <tr>
+                        <td style="color: black;" align="center" valign="middle">
+                            @p.Text
+                        </td>
+                        <td style="color: black;" align="center" valign="middle">
+                            @p.Value
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>

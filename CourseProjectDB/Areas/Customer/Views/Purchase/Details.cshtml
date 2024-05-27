@@ -4,6 +4,7 @@
 <div class="card shadow border-0 mt-4">
     <form method="post" asp-area="Customer" asp-controller="Purchase">
         <input asp-for="Purchase.ID" hidden />
+        <input asp-for="Purchase.IDOfEmployee" hidden />
         <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
@@ -118,11 +119,18 @@
                                     <input id="DepositedMoney" disabled asp-for="Purchase.DepositedMoney" type="text" class="form-control" />
                                 </div>
                             </div>
+                            <div class="row my-1">
+                                <div class="col-3 font-weight-bold">Дата час</div>
+                                <div class="col-9">
+                                    <input disabled asp-for="Purchase.DateOfMakingPurchase" type="text" class="form-control" />
+                                </div>
+                            </div>
+
                         }                        
                         @if (Model.Purchase.State != SD.State_Created)
                         {
                             <div class="row my-1">
-                                <div class="col-3 font-weight-bold">Решта</div>
+                                <div class="col-3 font-weight-bold">Решта у UAH</div>
                                 <div class="col-9">
                                     <input asp-for="Purchase.MoneyToReturn" disabled type="text" class="form-control" />
                                 </div>
@@ -191,7 +199,6 @@
 
 @section Scripts
 {
-   
     <partial name="_ValidationScriptsPartial" />
     <script>
         function validateInput() {

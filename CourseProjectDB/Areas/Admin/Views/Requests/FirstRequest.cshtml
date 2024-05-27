@@ -1,0 +1,59 @@
+﻿@model RequestsVM
+
+<partial name="_Notifications" />
+<form asp-controller="Requests" asp-action="FirstRequest" method="post">
+	<div class="card shadow border-0 mt-4">
+		<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h2 class="text-black py-2">Запит</h2>
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-4">
+			<div class="row pb-3">
+				<div class="col-9">
+					<div class="form-floating py-2 col-12">
+						<select class="form-select" asp-for="User.ID" asp-items="Model.SelectUser" aria-required="true">
+							<option value="" selected disabled> Оберіть працівника </option>
+						</select>
+						<span asp-validation-for="User.ID" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-3">
+					<button type="submit" class="btn btn-primary mt-2 form-control">Згенерувати</button>
+				</div>
+			</div>
+			@if (Model.SelectIAC != null && Model.SelectIAC.Any())
+			{
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th style="color: black; text-align:center">Валюта</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var p in @Model.SelectIAC)
+						{
+							<tr>
+								<td style="color: black;" align="center" valign="middle">
+									@p.Text
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+			else if (Model.User?.ID != null)
+			{
+				<h5 class="text-center">Даний працівник ще не має замовлень!</h5>
+			}
+		</div>
+	</div>
+</form>
+
+@section Scripts
+{
+   
+    <partial name="_ValidationScriptsPartial" />
+}

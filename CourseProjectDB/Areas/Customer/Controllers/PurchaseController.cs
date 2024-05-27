@@ -5,7 +5,6 @@ using CP.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Stripe.Climate;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
@@ -24,6 +23,14 @@ namespace CourseProjectDB.Areas.Customer.Controllers
         public IActionResult Index()
 		{
 			List<Purchase> objectsFromDb = _register.Purchase.GetAll().ToList();
+            foreach(var obj in objectsFromDb) 
+            {
+                if (obj.CurrencyID != null)
+                {
+                    obj.InfoAboutCurrency = _register.CurrencyInfo
+                        .GetFirstOrDefault(u => u.ID == obj.CurrencyID);
+                }
+            }
 			return View(objectsFromDb);
 		}
         public IActionResult Create() 
@@ -72,7 +79,10 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                  MoneyToReturn = 0,
                  DateOfMakingPurchase = DateTime.Now,
             };
-            _register.Purchase.Add(purchase);
+            double AC = _register.CurrencyInfo.GetFirstOrDefault(u => 
+            u.ID == purchaseVM.Purchase.CurrencyID).AvailOfAskedCourse;
+            purchase.SumOfCurrency = purchase.SumOfCurrency > AC ? AC : purchase.SumOfCurrency;
+			_register.Purchase.Add(purchase);
             _register.Save();
             TempData["success"] = "Замовлення було створено успішно! 😀";
             if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)) 
@@ -87,7 +97,6 @@ namespace CourseProjectDB.Areas.Customer.Controllers
         }
         public IActionResult Details(int ID) 
         {
-
             PurchaseVM purchase = new() 
             {
                 CurrencyList = _register.CurrencyInfo.GetAll()
@@ -98,18 +107,28 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                 }),
                 Purchase = _register.Purchase.GetFirstOrDefault(u=>u.ID == ID),
             };
+            
             purchase.Purchase.InfoAboutCurrency =
                 _register.CurrencyInfo.GetFirstOrDefault(u => u.ID == purchase.Purchase.CurrencyID);
             purchase.Purchase.User =
                 _register.User.GetFirstOrDefault(u => u.ID == purchase.Purchase.IDOfUser);
-            if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
-            {
-                var user = HttpContext.User;
-                var userId = user.FindFirstValue("UserID");
-                purchase.Purchase.IDOfEmployee = int.Parse(userId);
-                purchase.Purchase.UserEmployee = _register.User.GetFirstOrDefault(u => 
-                u.ID == purchase.Purchase.IDOfEmployee);
+
+			if (purchase.Purchase.State != SD.State_Completed) 
+            { 
+				if (User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Admin))
+                {
+                    var user = HttpContext.User;
+                    var userId = user.FindFirstValue("UserID");
+                    purchase.Purchase.IDOfEmployee = int.Parse(userId);
+                    purchase.Purchase.UserEmployee = _register.User.GetFirstOrDefault(u =>
+                    u.ID == purchase.Purchase.IDOfEmployee);
+                }
             }
+            else 
+            {
+				purchase.Purchase.UserEmployee =
+					_register.User.GetFirstOrDefault(u => u.ID == purchase.Purchase.IDOfEmployee);
+			}
             return View(purchase);
         }
 
@@ -119,7 +138,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             Purchase purchase = _register.Purchase.GetFirstOrDefault(u => u.ID == p.Purchase.ID);
             _register.Purchase.Delete(purchase);
             _register.Save();
-            TempData["success"] = "Замовлення було видалено успішно!";
+            TempData["success"] = "Замовлення було скасовано успішно!";
             return RedirectToAction("Index", "Purchase");
         }
 
@@ -134,12 +153,16 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 			}
             purchase.InfoAboutCurrency = _register.CurrencyInfo
                     .GetFirstOrDefault(u => u.ID == p.Purchase.CurrencyID);
-            if (p.Purchase.SumOfCurrency != purchase.SumOfCurrency) 
+            if (p.Purchase.SumOfCurrency != purchase.SumOfCurrency || 
+                p.Purchase.CurrencyID != purchase.CurrencyID) 
             {
                 purchase.SumOfCurrency = p.Purchase.SumOfCurrency;
                 purchase.SumInUAH = _register.Purchase.CountSumInUAH(purchase.SumOfCurrency, 
                     Purchase.PDVPercent, purchase.InfoAboutCurrency.AskedCoursePriceTo);
 			}
+            purchase.IDOfEmployee = p.Purchase.IDOfEmployee;
+            purchase.UserEmployee = _register.User
+                .GetFirstOrDefault(u => u.ID == purchase.IDOfEmployee);
             purchase.State = SD.State_InProces;
             _register.Purchase.Update(purchase);
             _register.Save();
@@ -151,7 +174,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
         public IActionResult InProces(PurchaseVM p) 
         {
             Purchase purchase = _register.Purchase.GetFirstOrDefault(u => u.ID == p.Purchase.ID);
-
+            purchase.DateOfMakingPurchase = DateTime.Now;
             purchase.DepositedMoney = p.Purchase.DepositedMoney;
             purchase.MoneyToReturn = _register.Purchase
                 .CountMoneyToReturn((double)purchase.DepositedMoney, purchase.SumInUAH);
@@ -170,15 +193,15 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 		}
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll(string status)
+        public IActionResult GetAll()
         {
             IEnumerable<Purchase> ObjectsFromDb;
 
             if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
             {
                 ObjectsFromDb = _register.Purchase
-                .GetAll(includeProperties: "User").ToList();
-            }
+                .GetAll(includeProperties: "User").ToList();	
+			}
             else
             {
 				var user = HttpContext.User;
@@ -187,30 +210,16 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 				ObjectsFromDb = _register.Purchase.GetAll(u =>
                 u.IDOfUser.ToString() == userId, includeProperties: "User");
 			}
+			foreach (var obj in ObjectsFromDb)
+			{
+				if (obj.CurrencyID != null)
+				{
+					obj.InfoAboutCurrency = _register.CurrencyInfo
+						.GetFirstOrDefault(u => u.ID == obj.CurrencyID);
+				}
+			}
 
-            switch (status)
-            {
-
-                case "Створено":
-                    ObjectsFromDb = ObjectsFromDb.Where(u => u.State
-                        ==SD.State_Created);
-                    break;
-
-                case "В процесі":
-                    ObjectsFromDb = ObjectsFromDb.Where(u => u.State
-                        == SD.State_InProces);
-                    break;
-
-                case "Завершено":
-                    ObjectsFromDb = ObjectsFromDb.Where(u => u.State
-                        == SD.State_Completed);
-                    break;
-
-                default:
-                    break;
-            }
-
-            return Json(new { data = ObjectsFromDb });
+			return Json(new { data = ObjectsFromDb });
         }
         #endregion
     }

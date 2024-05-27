@@ -1,0 +1,50 @@
+﻿@model RequestsVM
+
+<form asp-controller="Requests" asp-action="FifthRequest" method="post">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-black py-2">Запит</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th style="color: black; text-align:center">ID Валюти</th>
+                        <th style="color: black; text-align:center">Валюта</th>
+                        <th style="color: black; text-align:center">ID замовлення</th> 
+                        <th style="color: black; text-align:center">Сума у валюті</th>
+                        <th style="color: black; text-align:center">Сума у UAH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in ViewBag.Purchase)
+                    {
+                        <tr>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.MaxPurchase.CurrencyID
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.MaxPurchase.InfoAboutCurrency.Name
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.MaxPurchase.ID
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.MaxPurchase.SumOfCurrency
+                            </td> 
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.MaxPurchase.SumInUAH
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+

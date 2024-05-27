@@ -6,7 +6,7 @@ using CP.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Stripe;
+using Syncfusion.EJ2.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +28,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminRole", policy => policy.RequireRole(SD.Role_Admin));
 });
 
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhPYVFzWmFZfVpgcF9HY1ZTTWYuP1ZhSXxXdkBhX39acXdWRmJeUkw=");
 
 builder.Services.AddScoped<IRegister, Register>();
 

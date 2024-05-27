@@ -1,0 +1,116 @@
+﻿@model RequestsVM
+
+<form asp-controller="Requests" asp-action="ThirdRequest" method="post">
+    <input type="hidden" id="StartDateTime" asp-for="StartDateTime" />
+    <input type="hidden" id="EndDateTime" asp-for="EndDateTime" />
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-black py-2">Запит</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-4">  
+                    <div class="form-group">
+                        <label asp-for="StartDateTime" class="p-4">Від</label>
+                        <ejs-datetimepicker id="startDatetimePicker" width="175px" asp-for="StartDateTime"></ejs-datetimepicker>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label asp-for="EndDateTime" class="p-4">До</label>
+                        <ejs-datetimepicker id="endDatetimePicker" width="175px" asp-for="EndDateTime"></ejs-datetimepicker>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary mt-2" style="width: 100%">Згенерувати</button>
+                </div>
+            </div>
+            @if (ViewBag.ListOfPurchase != null)
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="color: black; text-align:center">ID</th>
+                            <th style="color: black; text-align:center">Валюта</th>
+                            <th style="color: black; text-align:center">Сума(у валюті)</th>
+                            <th style="color: black; text-align:center">Дата час створення</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in ViewBag.ListOfPurchase)
+                        {
+                            <tr>
+                                <td style="color: black;" align="center" valign="middle">
+                                    @p.ID
+                                </td>
+                                <td style="color: black;" align="center" valign="middle">
+                                    @p.CurrencyID
+                                </td>
+                                <td style="color: black;" align="center" valign="middle">
+                                    @p.SumOfCurrency
+                                </td>
+                                <td style="color: black;" align="center" valign="middle">
+                                    @p.DateOfMakingPurchase
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var startDatetimepicker = new ej.calendars.DateTimePicker({
+                width: '175px',
+                value: new Date(2024, 4, 15, 9, 0, 0),
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+            startDatetimepicker.appendTo('#startDatetimePicker');
+
+            var endDatetimepicker = new ej.calendars.DateTimePicker({
+                width: '175px',
+                value: new Date(2024, 4, 15, 9, 0, 0),
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+            endDatetimepicker.appendTo('#endDatetimePicker');
+
+            // Додайте обробник події submit для форми
+            document.querySelector('form').addEventListener('submit', function (e) {
+                // Отримайте значення DateTimePicker
+                var startDateTimeValue = startDatetimepicker.value;
+                var endDateTimeValue = endDatetimepicker.value;
+
+                // Перетворіть значення DateTimePicker в рядок у потрібному форматі
+                var formattedStartDateTime = startDateTimeValue.getFullYear() + '-' +
+                    ('0' + (startDateTimeValue.getMonth() + 1)).slice(-2) + '-' +
+                    ('0' + startDateTimeValue.getDate()).slice(-2) + ' ' +
+                    ('0' + startDateTimeValue.getHours()).slice(-2) + ':' +
+                    ('0' + startDateTimeValue.getMinutes()).slice(-2) + ':' +
+                    ('0' + startDateTimeValue.getSeconds()).slice(-2);
+
+                var formattedEndDateTime = endDateTimeValue.getFullYear() + '-' +
+                    ('0' + (endDateTimeValue.getMonth() + 1)).slice(-2) + '-' +
+                    ('0' + endDateTimeValue.getDate()).slice(-2) + ' ' +
+                    ('0' + endDateTimeValue.getHours()).slice(-2) + ':' +
+                    ('0' + endDateTimeValue.getMinutes()).slice(-2) + ':' +
+                    ('0' + endDateTimeValue.getSeconds()).slice(-2);
+
+                // Оновіть значення DateTimePicker на формі з відповідними рядками
+                document.getElementById('StartDateTime').value = formattedStartDateTime;
+                document.getElementById('EndDateTime').value = formattedEndDateTime;
+            });
+        });
+    </script>
+
+}

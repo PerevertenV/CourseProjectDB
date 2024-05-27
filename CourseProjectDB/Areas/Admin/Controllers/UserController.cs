@@ -31,12 +31,20 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 		[HttpDelete]
 		public IActionResult Delete(int? id)
 		{
-			var CurrencyToBeDeleted = _register.User.GetFirstOrDefault(u => u.ID == id);
-			if (CurrencyToBeDeleted == null)
+			var UserToBeDeleted = _register.User.GetFirstOrDefault(u => u.ID == id);
+			if (UserToBeDeleted == null)
 			{
 				return Json(new { succes = false, message = "Помилка під час видалення" });
 			}
-			_register.User.Delete(CurrencyToBeDeleted);
+			List<Purchase> purchases = _register.Purchase.GetAll().ToList();
+			foreach (Purchase purchase in purchases) 
+			{
+				if(purchase.IDOfUser == id) 
+				{
+					purchase.IDOfUser = null;
+				}
+			}
+			_register.User.Delete(UserToBeDeleted);
 			_register.Save();
 
 			return Json(new { succes = true, message = "Користувача було видалено успішно!" });

@@ -1,0 +1,157 @@
+﻿
+<partial name="_Notifications" />
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-black py-2">Запити із даними</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3 ">
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th style="color: black; text-align:center">Запит</th>
+					<th style="color: black; text-align:center">Перехід</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="color: black;" align="center" valign="middle"> 
+						Список валюти, яку продав певний продавець
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" role="group">
+							<a asp-controller="Requests" asp-action="FirstRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>	
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle"> 
+						Список працівників із певним прізвищем
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group"  style="width: 15%;">
+							<a asp-controller="Requests" asp-action="SecondRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Список операцій, які були проведені за певний період
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="ThirdRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Скільки оперцій було проведено за певний період
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="FourthRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Скільки операцій було проведено для певної валюти
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="FifthRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Хто із покупців зробив найбільше операцій
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="SixthRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Який тип платежів не було проведено за останній місяць
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="SeventhRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Список користувачів які не здійснили жодної операції за останній місяць
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="EighthRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Список валюти, що не була продана за останній місяць
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="NinethRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Список працівників із коментарями
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="TenthRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="color: black; width: 85%;" align="center" valign="middle">
+						Корельований підзапит, список валют та найдорожчі операції проведені із ними
+					</td>
+					<td align="center">
+						<div class="w-75 btn-group" style="width: 15%;">
+							<a asp-controller="Requests" asp-action="EleventhRequest" class="btn btn-primary mx-2" style="width:40px">
+								<i class="bi bi-arrows-angle-expand"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

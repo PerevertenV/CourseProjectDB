@@ -1,0 +1,33 @@
+﻿@model RequestsVM
+
+<form asp-controller="Requests" asp-action="SixthRequest" method="post">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-black py-2">Запит</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th style="color: black; text-align:center">Покупець</th>
+                        <th style="color: black; text-align:center">К-сть операцій</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="color: black;" align="center" valign="middle">
+                            @Model.User.Name
+                        </td>
+                        <td style="color: black;" align="center" valign="middle">
+                            @ViewBag.Value
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

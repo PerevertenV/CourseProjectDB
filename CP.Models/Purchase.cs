@@ -19,7 +19,7 @@ namespace CP.Models
 
         [Required]
         [DisplayName("Валюта")]
-        public int CurrencyID { get; set; }
+        public int? CurrencyID { get; set; }
         [ForeignKey(nameof(CurrencyID))]
         [ValidateNever]
         public InfoAboutCurrency InfoAboutCurrency { get; set; }

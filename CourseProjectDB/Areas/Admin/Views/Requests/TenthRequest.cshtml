@@ -1,0 +1,56 @@
+﻿@model RequestsVM
+
+<form asp-controller="Requests" asp-action="FifthRequest" method="post">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-black py-2">Запит</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th style="color: black; text-align:center">ID</th>
+                        <th style="color: black; text-align:center">ПІБ</th>
+                        <th style="color: black; text-align:center">Повідомлення(проводив операція за останній тиждень чи ні)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in ViewBag.EmployeeWith)
+                    {
+                        <tr>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.ID
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.Name
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                Проводив
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var p in ViewBag.EmployeeWithout)
+                    {
+                        <tr>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.ID
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                @p.Name
+                            </td>
+                            <td style="color: black;" align="center" valign="middle">
+                                Не Проводив
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+

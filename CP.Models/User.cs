@@ -12,7 +12,8 @@ namespace CP.Models
     public class User
     {
         [Key]
-        public int ID { get; set; }
+		[Required(ErrorMessage = "Не лишайте поле пустим!")]
+		public int ID { get; set; }
         [Required]
         [StringLength(20)]
         [DisplayName("user name")]
