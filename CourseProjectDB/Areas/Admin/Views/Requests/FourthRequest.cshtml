@@ -69,13 +69,11 @@
             });
             endDatetimepicker.appendTo('#endDatetimePicker');
 
-            // Додайте обробник події submit для форми
             document.querySelector('form').addEventListener('submit', function (e) {
-                // Отримайте значення DateTimePicker
+
                 var startDateTimeValue = startDatetimepicker.value;
                 var endDateTimeValue = endDatetimepicker.value;
 
-                // Перетворіть значення DateTimePicker в рядок у потрібному форматі
                 var formattedStartDateTime = startDateTimeValue.getFullYear() + '-' +
                     ('0' + (startDateTimeValue.getMonth() + 1)).slice(-2) + '-' +
                     ('0' + startDateTimeValue.getDate()).slice(-2) + ' ' +
@@ -90,7 +88,6 @@
                     ('0' + endDateTimeValue.getMinutes()).slice(-2) + ':' +
                     ('0' + endDateTimeValue.getSeconds()).slice(-2);
 
-                // Оновіть значення DateTimePicker на формі з відповідними рядками
                 document.getElementById('StartDateTime').value = formattedStartDateTime;
                 document.getElementById('EndDateTime').value = formattedEndDateTime;
             });
