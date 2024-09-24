@@ -12,17 +12,6 @@ namespace CP.DataAccess.Repository
             _db = db;
         }
 
-        public double CountMoneyToReturn(double DepositedMoney, double NeededMoney)
-        {
-            if (DepositedMoney < NeededMoney) return 0;
-            else return Math.Round(DepositedMoney - NeededMoney, 2);
-        }
-
-        public double CountSumInUAH(double SumToChange, double PDVpercent, double Price)
-        {
-            return Math.Round(SumToChange * Price + SumToChange * Price * PDVpercent, 2);
-        }
-
         public void Update(Purchase obj)
         {
             _db.Purchase.Update(obj);

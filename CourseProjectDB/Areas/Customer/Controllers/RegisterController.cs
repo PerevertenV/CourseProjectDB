@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
-using CP.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CP.Models;
+using CP.DataAccess.Services.IServices;
+using CP.Utility.StatciData;
 
 
 
@@ -18,10 +19,11 @@ namespace CourseProjectDB.Areas.Customer.Controllers
     public class RegisterController : Controller
     {
         readonly IRegister _register;
-
-        public RegisterController(IRegister register)
+		private readonly IServiceBL _service;
+		public RegisterController(IRegister register, IServiceBL service)
         {
-            _register = register;   
+            _register = register;  
+            _service = service;
         }
         public IActionResult Index()
         {
@@ -76,7 +78,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                 {
                     UserName = obj.UserName,
                     Name = obj.Name,
-                    Password = _register.User.PasswordHashCoder(obj.Password),
+                    Password = _service.User.PasswordHashCoder(obj.Password),
                     role = WhichRole
                 };
 

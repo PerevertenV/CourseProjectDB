@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using CP.Models;
+using CP.DataAccess.Services.IServices;
 
 namespace CourseProjectDB.Areas.Customer.Controllers
 {
@@ -11,9 +12,11 @@ namespace CourseProjectDB.Areas.Customer.Controllers
     public class LoginController : Controller
     {
         private readonly IRegister _register;
-        public LoginController(IRegister register)
+        private readonly IServiceBL _service;
+        public LoginController(IRegister register, IServiceBL service)
         {
             _register = register;       
+            _service = service;
         }
         public IActionResult Index()
         {
@@ -28,7 +31,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             {
                 if(user.UserName == obj.UserName) 
                 {
-                    string Decodet = _register.User.DecryptString(user.Password);
+                    string Decodet = _service.User.DecryptString(user.Password);
                     success = false;
                     if(obj.Password == Decodet) 
                     {

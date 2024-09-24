@@ -1,8 +1,10 @@
 using CP.DataAccess.Data;
 using CP.DataAccess.Repository;
 using CP.DataAccess.Repository.IRepository;
+using CP.DataAccess.Services;
+using CP.DataAccess.Services.IServices;
 using CP.Models;
-using CP.Utility;
+using CP.Utility.StatciData;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,7 @@ builder.Services.AddAuthorization(options =>
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF1cXmhPYVFzWmFZfVpgcF9HY1ZTTWYuP1ZhSXxXdkBhX39acXdWRmJeUkw=");
 
 builder.Services.AddScoped<IRegister, Register>();
+builder.Services.AddScoped<IServiceBL, ServiceBL>();
 
 var app = builder.Build();
 

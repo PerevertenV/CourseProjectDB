@@ -1,7 +1,7 @@
 ﻿using CP.DataAccess.Repository.IRepository;
 using CP.Models;
 using CP.Models.VModels;
-using CP.Utility;
+using CP.Utility.StatciData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

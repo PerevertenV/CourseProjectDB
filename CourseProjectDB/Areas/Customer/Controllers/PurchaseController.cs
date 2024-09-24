@@ -1,7 +1,8 @@
 ﻿using CP.DataAccess.Repository.IRepository;
+using CP.DataAccess.Services.IServices;
 using CP.Models;
 using CP.Models.VModels;
-using CP.Utility;
+using CP.Utility.StatciData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,9 +16,11 @@ namespace CourseProjectDB.Areas.Customer.Controllers
 	public class PurchaseController : Controller
 	{
 		private readonly IRegister _register;
-        public PurchaseController(IRegister register)
+		private readonly IServiceBL _service;
+		public PurchaseController(IRegister register, IServiceBL service)
         {
 			_register = register;
+            _service = service; 
         }
 
         public IActionResult Index()
@@ -66,7 +69,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             
             Purchase purchase = new() 
             {
-                SumInUAH = _register.Purchase.CountSumInUAH (purchaseVM.Purchase.SumOfCurrency,
+                SumInUAH = _service.Purchase.CountSumInUAH (purchaseVM.Purchase.SumOfCurrency,
                     Purchase.PDVPercent,
                     _register.CurrencyInfo.GetFirstOrDefault(u =>
                     u.ID==purchaseVM.Purchase.CurrencyID).AskedCoursePriceTo),
@@ -157,7 +160,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                 p.Purchase.CurrencyID != purchase.CurrencyID) 
             {
                 purchase.SumOfCurrency = p.Purchase.SumOfCurrency;
-                purchase.SumInUAH = _register.Purchase.CountSumInUAH(purchase.SumOfCurrency, 
+                purchase.SumInUAH = _service.Purchase.CountSumInUAH(purchase.SumOfCurrency, 
                     Purchase.PDVPercent, purchase.InfoAboutCurrency.AskedCoursePriceTo);
 			}
             purchase.IDOfEmployee = p.Purchase.IDOfEmployee;
@@ -176,7 +179,7 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             Purchase purchase = _register.Purchase.GetFirstOrDefault(u => u.ID == p.Purchase.ID);
             purchase.DateOfMakingPurchase = DateTime.Now;
             purchase.DepositedMoney = p.Purchase.DepositedMoney;
-            purchase.MoneyToReturn = _register.Purchase
+            purchase.MoneyToReturn = _service.Purchase
                 .CountMoneyToReturn((double)purchase.DepositedMoney, purchase.SumInUAH);
             purchase.State = SD.State_Completed;
 

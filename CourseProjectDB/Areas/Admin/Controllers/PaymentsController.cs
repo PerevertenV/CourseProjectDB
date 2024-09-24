@@ -1,10 +1,10 @@
 ﻿using CP.DataAccess.Repository.IRepository;
-using CP.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using CP.Models;
 using CP.Models.VModels;
+using CP.Utility.StatciData;
 
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
