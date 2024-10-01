@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 using CP.DataAccess.Services.IServices;
 using Moq;
 using CP.DataAccess.ServicesBL;
+using CP.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
+using CourseProjectDB.Areas.Customer.Controllers;
+using CP.Models.VModels;
+using CP.Models;
 
 namespace CP.Utility.UnitTests
 {
 	[TestFixture]
-	public class UnitTest
+	public class UnitTestForMethods
 	{
 		private PurchaseService ps;
 
@@ -22,30 +27,16 @@ namespace CP.Utility.UnitTests
 		}
 
 		[Test]
-		public void Check_CountMoneyToReturn_Method_Value()
+		[TestCase(10.1520, 9.0020, ExpectedResult = 1.15)]
+		[TestCase(9.0020, 10.1520, ExpectedResult = 0)]
+		public double Check_CountMoneyToReturn_Method(double DM, double NM)
 		{
-			double depositedMoney = 10.1520;
-			double neededMoney = 9.0020;
+			double depositedMoney = DM;
+			double neededMoney = NM;
 
 			double result = ps.CountMoneyToReturn(depositedMoney, neededMoney);
 
-			Assert.That(result, Is.EqualTo(1.15).Within(0.01),
-				"The returned value should be 1.15");
-			TestContext.WriteLine("Test \"Check_CountMoneyToReturn_Method_Value\" " +
-				"completed successfully");
-		}
-		[Test]
-		public void Check_CountMoneyToReturn_Method_Bool()
-		{
-			double neededMoney = 10.1520;
-			double depositedMoney = 9.0020;
-
-			double result = ps.CountMoneyToReturn(depositedMoney, neededMoney);
-
-			Assert.That(result, Is.EqualTo(0),
-				"The returned value should be 0");
-			TestContext.WriteLine("Test \"Check_CountMoneyToReturn_Method_Bool\" " +
-				"completed successfully");
+			return result;
 		}
 
 		[Test]

@@ -66,7 +66,6 @@ namespace CourseProjectDB.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult Create(PurchaseVM purchaseVM) 
         {
-            
             Purchase purchase = new() 
             {
                 SumInUAH = _service.Purchase.CountSumInUAH (purchaseVM.Purchase.SumOfCurrency,
@@ -84,9 +83,12 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             };
             double AC = _register.CurrencyInfo.GetFirstOrDefault(u => 
             u.ID == purchaseVM.Purchase.CurrencyID).AvailOfAskedCourse;
+
             purchase.SumOfCurrency = purchase.SumOfCurrency > AC ? AC : purchase.SumOfCurrency;
+
 			_register.Purchase.Add(purchase);
             _register.Save();
+
             TempData["success"] = "Замовлення було створено успішно! 😀";
             if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)) 
             {
@@ -129,8 +131,8 @@ namespace CourseProjectDB.Areas.Customer.Controllers
             }
             else 
             {
-				purchase.Purchase.UserEmployee =
-					_register.User.GetFirstOrDefault(u => u.ID == purchase.Purchase.IDOfEmployee);
+				purchase.Purchase.UserEmployee = _register.User.GetFirstOrDefault(u => 
+                    u.ID == purchase.Purchase.IDOfEmployee);
 			}
             return View(purchase);
         }
@@ -154,15 +156,19 @@ namespace CourseProjectDB.Areas.Customer.Controllers
                 purchase.CurrencyID = p.Purchase.CurrencyID;
                 
 			}
+
             purchase.InfoAboutCurrency = _register.CurrencyInfo
                     .GetFirstOrDefault(u => u.ID == p.Purchase.CurrencyID);
+
             if (p.Purchase.SumOfCurrency != purchase.SumOfCurrency || 
                 p.Purchase.CurrencyID != purchase.CurrencyID) 
             {
                 purchase.SumOfCurrency = p.Purchase.SumOfCurrency;
+
                 purchase.SumInUAH = _service.Purchase.CountSumInUAH(purchase.SumOfCurrency, 
                     Purchase.PDVPercent, purchase.InfoAboutCurrency.AskedCoursePriceTo);
 			}
+
             purchase.IDOfEmployee = p.Purchase.IDOfEmployee;
             purchase.UserEmployee = _register.User
                 .GetFirstOrDefault(u => u.ID == purchase.IDOfEmployee);
