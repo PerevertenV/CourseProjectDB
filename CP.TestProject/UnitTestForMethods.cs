@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using CourseProjectDB.Areas.Customer.Controllers;
 using CP.Models.VModels;
 using CP.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CP.Utility.UnitTests
 {
@@ -24,6 +25,7 @@ namespace CP.Utility.UnitTests
 		public void Setup() 
 		{
 			ps = new PurchaseService();
+            
 		}
 
 		[Test]
@@ -54,6 +56,53 @@ namespace CP.Utility.UnitTests
 			TestContext.WriteLine("Test \"Check_CountSumInUAH_Method_Value\" " +
 				"completed successfully");
 		}
+
+		[Test]
+		[TestCase(350.00)]
+		[TestCase(0.00)]
+		public void Check_AddingCurrency_Price(double price) 
+		{
+			InfoAboutCurrency Curr = new InfoAboutCurrency()
+			{
+				Name = "13",
+				AskedCoursePriceTo = price,
+				AvailOfAskedCourse = 300
+			};
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(Curr);
+
+            var isValid = Validator.TryValidateObject(Curr, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.False);
+            Assert.That(validationResults, Is.Not.Empty);
+            Assert.That(validationResults[0].ErrorMessage, 
+				Is.EqualTo("Ціна не може бути більше 300 грн за одиницю та дорівнювати 0"));
+        }
+		[Test]
+		[TestCase(10001)]
+		[TestCase(0)]
+		public void Check_AddingCurrency_Capacity(int capacity) 
+		{
+			InfoAboutCurrency Curr = new InfoAboutCurrency()
+			{
+				Name = "13",
+				AskedCoursePriceTo = 20,
+				AvailOfAskedCourse = capacity
+            };
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(Curr);
+
+            var isValid = Validator.TryValidateObject(Curr, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.False);
+            Assert.That(validationResults, Is.Not.Empty);
+            Assert.That(validationResults[0].ErrorMessage, 
+				Is.EqualTo("Доступна кiлькiсть не може перевищувати 10000 та дорівнювати 0"));
+        }
 
 	}
 }

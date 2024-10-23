@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Infrastructure;
 using System.Security.Claims;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using CourseProjectDB.Areas.Admin.Controllers;
+using System.ComponentModel.DataAnnotations;
 
 namespace CP.TestProject
 {
@@ -20,15 +22,17 @@ namespace CP.TestProject
 	{
 		private Mock<IRegister> _mockRegister;
 		private Mock<IServiceBL> _mockService;
-		private PurchaseController _controller;
+		private PurchaseController _controllerPurchase;
+		private CurrencyController _controllerCurrency;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
 			_mockRegister = new Mock<IRegister>();
 			_mockService = new Mock<IServiceBL>();
 
-			_controller = new PurchaseController(_mockRegister.Object, _mockService.Object);
+			_controllerPurchase = new PurchaseController(_mockRegister.Object, _mockService.Object);
+			_controllerCurrency = new CurrencyController(_mockRegister.Object);
 		}
 
 		[Test]
@@ -71,9 +75,9 @@ namespace CP.TestProject
 			var tempData = new TempDataDictionary(new DefaultHttpContext(), tempDataProviderMock.Object);
 
 			// Додаємо TempData до контролера
-			_controller.TempData = tempData;
+			_controllerPurchase.TempData = tempData;
 
-			_controller.ControllerContext = new ControllerContext
+			_controllerPurchase.ControllerContext = new ControllerContext
 			{
 				HttpContext = new DefaultHttpContext
 				{
@@ -82,7 +86,7 @@ namespace CP.TestProject
 			};
 
 			// Act
-			var result = _controller.Create(purchaseVM) as RedirectToActionResult;
+			var result = _controllerPurchase.Create(purchaseVM) as RedirectToActionResult;
 
 			// Assert
 			Assert.That(result, Is.Not.Null);
@@ -118,27 +122,92 @@ namespace CP.TestProject
 
 			var tempDataProviderMock = new Mock<ITempDataProvider>();
 			var tempData = new TempDataDictionary(new DefaultHttpContext(), tempDataProviderMock.Object);
-			_controller.TempData = tempData;
+			_controllerPurchase.TempData = tempData;
 
-			var result = _controller.CanclePurchase(purchaseVM) as RedirectToActionResult;
+			var result = _controllerPurchase.CanclePurchase(purchaseVM) as RedirectToActionResult;
 
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.ActionName, Is.EqualTo("Index")); 
 			Assert.That(result.ControllerName, Is.EqualTo("Purchase"));
 
-			Assert.That(_controller.TempData["success"], Is.EqualTo("Замовлення було скасовано успішно!"));
+			Assert.That(_controllerPurchase.TempData["success"], Is.EqualTo("Замовлення було скасовано успішно!"));
 		}
 
+        [TestCase("USD", "USD")] 
+        public void Upsert_ExistingCurrency_ReturnsViewWithModelError(string existingCurrencyName, string newCurrencyName)
+        {
+           
+            var existingCurrency = new InfoAboutCurrency { ID = 1, Name = existingCurrencyName };
+            var newCurrency = new InfoAboutCurrency { ID = 0, Name = newCurrencyName }; 
 
+            
+            _mockRegister.Setup(r => r.CurrencyInfo.GetAll(It.IsAny<Expression<Func<InfoAboutCurrency, bool>>>(), null))
+				.Returns(new List<InfoAboutCurrency> { existingCurrency });
 
-		// Звільнення від мок-об'єктів
-		[TearDown]
+            
+            var result = _controllerCurrency.Upsert(newCurrency) as ViewResult;
+
+           
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Model, Is.EqualTo(newCurrency));
+            Assert.That(_controllerCurrency.ModelState.IsValid, Is.False);
+            Assert.That(_controllerCurrency.ModelState.ContainsKey("name"), Is.True);
+            Assert.That(_controllerCurrency.ModelState["name"].Errors[0].ErrorMessage, Is.EqualTo("Валюта із таким кодом уже існує"));
+        }
+
+		[Test]
+		public void FullTest_ForAddingCurrency() 
+		{
+            var currencyForSending = new InfoAboutCurrency 
+			{	
+				ID = 0, 
+				Name = "13",
+                AskedCoursePriceTo = 35,
+                AvailOfAskedCourse = 300
+            };
+
+            _mockRegister.Setup(r => r.CurrencyInfo.GetAll(It.IsAny<Expression<Func<InfoAboutCurrency, bool>>>(), null))
+               .Returns(new List<InfoAboutCurrency>());
+
+            var tempDataProviderMock = new Mock<ITempDataProvider>();
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), tempDataProviderMock.Object);
+            _controllerCurrency.TempData = tempData;
+            
+			_mockRegister.Setup(r => r.Save());
+
+            _mockRegister.Setup(r => r.CurrencyInfo.Add(It.IsAny<InfoAboutCurrency>()));
+
+            var result = _controllerCurrency.Upsert(currencyForSending) as ViewResult;
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(currencyForSending);
+
+            var isValid = Validator.TryValidateObject(currencyForSending,
+                validationContext, validationResults, true);
+
+            Assert.That(isValid, Is.True);
+            Assert.That(validationResults, Is.Empty);
+            Assert.That(result, Is.Null);
+            Assert.That(tempData["success"], Is.EqualTo("Валюту було додано успішно!"));
+
+            // Перевіряємо, що метод Add був викликаний
+            _mockRegister.Verify(r => r.CurrencyInfo.Add(currencyForSending), Times.Once);
+            // Перевіряємо, що метод Save був викликаний
+            _mockRegister.Verify(r => r.Save(), Times.Once);
+
+        }
+
+        // Звільнення від мок-об'єктів
+        [TearDown]
 		public void TearDown()
 		{
-			_controller?.Dispose();
-			_mockRegister = null;
+			_controllerPurchase?.Dispose();
+			_controllerCurrency?.Dispose();
+            _mockRegister = null;
 			_mockService = null;
-			_controller = null;
+			_controllerPurchase = null;
+            _controllerCurrency = null;
+
 		}
 	}
 }

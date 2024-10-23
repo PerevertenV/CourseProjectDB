@@ -6,6 +6,7 @@ using CP.Models;
 using CP.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CourseProjectDB.Areas.Admin.Controllers
 {
@@ -17,7 +18,6 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 
 		public CurrencyController(IRegister register)
 		{
-
 			_register = register;
 		}
 
@@ -44,6 +44,14 @@ namespace CourseProjectDB.Areas.Admin.Controllers
 		{
 			if(IAC.ID == 0) 
 			{
+				List <InfoAboutCurrency> CurrListFromDb = _register.CurrencyInfo
+					.GetAll(u => u.Name == IAC.Name).ToList();
+
+				if (!CurrListFromDb.IsNullOrEmpty()) 
+				{
+					ModelState.AddModelError("name","Валюта із таким кодом уже існує");
+					return View(IAC);
+                }
 				_register.CurrencyInfo.Add(IAC);
 				TempData["success"] = "Валюту було додано успішно!";
 			}
