@@ -31,7 +31,7 @@ namespace CP.Models
 		public User? UserEmployee { get; set; }
 
 		[DisplayName("Внесені кошти")]
-        [Range(1, 100000, ErrorMessage = "Вкажіть внесену суму!")]
+        [Range(1, 100000, ErrorMessage = "Внесена сума має бути від 1 до 100000 одиниць!")]
         public double? DepositedMoney { get; set; }
 
         

@@ -104,5 +104,94 @@ namespace CP.Utility.UnitTests
 				Is.EqualTo("Доступна кiлькiсть не може перевищувати 10000 та дорівнювати 0"));
         }
 
+		[Test]
+		[TestCase(100001)]
+		[TestCase(0)]
+		public void Check_PurchaseInputField_DepositedMoneyN(int DM) 
+		{
+			Purchase purch = new Purchase()
+			{
+                CurrencyID = 1,
+				State = "3",
+                DepositedMoney = DM,
+                SumOfCurrency = 100,
+            };
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(purch);
+
+            var isValid = Validator.TryValidateObject(purch, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.False);
+            Assert.That(validationResults, Is.Not.Empty);
+        }
+		[Test]
+		[TestCase(5001)]
+		[TestCase(0)]
+		public void Check_PurchaseInputField_SumOfCurrencyN(int SOC) 
+		{
+			Purchase purch = new Purchase()
+			{
+                CurrencyID = 1,
+				State = "3",
+                DepositedMoney = 100,
+                SumOfCurrency = SOC,
+            };
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(purch);
+
+            var isValid = Validator.TryValidateObject(purch, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.False);
+            Assert.That(validationResults, Is.Not.Empty);
+        }
+		
+		[Test]
+		[TestCase(100000)]
+		[TestCase(1)]
+		public void Check_PurchaseInputField_DepositedMoneyP(int DM) 
+		{
+			Purchase purch = new Purchase()
+			{
+                CurrencyID = 1,
+				State = "3",
+                DepositedMoney = DM,
+                SumOfCurrency = 100,
+            };
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(purch);
+
+            var isValid = Validator.TryValidateObject(purch, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.True);
+            Assert.That(validationResults, Is.Empty);
+        }
+		[Test]
+		[TestCase(5000)]
+		[TestCase(1)]
+		public void Check_PurchaseInputField_SumOfCurrencyP(int SOC) 
+		{
+			Purchase purch = new Purchase()
+			{
+                CurrencyID = 1,
+				State = "3",
+                DepositedMoney = 100,
+                SumOfCurrency = SOC,
+            };
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(purch);
+
+            var isValid = Validator.TryValidateObject(purch, 
+				validationContext, validationResults, true);
+
+			Assert.That(isValid, Is.True);
+            Assert.That(validationResults, Is.Empty);
+        }
 	}
 }
